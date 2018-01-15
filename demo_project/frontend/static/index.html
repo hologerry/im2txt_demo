@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-resource/angular-resource.js"></script>
+
+    <script src="js/filesModelDirective.js"></script>
+
+    <script src="js/app.js"></script>
+    <script src="js/upload.api.js"></script>
+
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+
+    <title>Title</title>
+</head>
+<body>
+    <div ng-app="FrontendApp" ng-controller="MainCtrl">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="form" name="form" ng-submit="uploadImage()">
+                    <input type="file" files-model="newImage.image">
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+        <div ng-if="images.length == 0">
+            There are no images available yet.
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-lg-6"
+                    ng-repeat="image in images track by image.pk">
+                <h3>Image {{ image.pk }}</h3>
+                <button ng-click="deleteImage(image)" class="btn btn-danger">Delete</button>
+                <img ng-src="{{ image.image }}" class="img-responsive">
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>
