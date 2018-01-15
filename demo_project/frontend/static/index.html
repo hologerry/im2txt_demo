@@ -16,51 +16,65 @@
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
 
-
+    <link rel="stylesheet" href="css/custom.css">
 
     <title>Image Caption</title>
 </head>
 <body>
     <div ng-app="FrontendApp" ng-controller="MainCtrl">
-        <div class="panel panel-default">
+        <div class="panel panel-default" >
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-cloud-upload"></i>
+                <label for="file">Select an Image</label>
+            </div>
             <div class="panel-body">
-                <form class="form" name="form" ng-submit="uploadImage()">
-                    <div class="form-group">
-                        <label for="file">Select an Image</label>
-                        <input type="file" ngf-select ng-model="newImage.image" name="file"
-                           class="form-control"
-                           accept="image/*" ngf-max-size="10MB" required
-                           ngf-model-invalid="errorFile">
-                        <i ng-show="form.file.$error.maxSize">File too large
-                            {{ errorFile.size / 1000000 | number:1 }} MB: max 10M</i>
-                        <img ng-if="form.file.$valid" ngf-thumbnail="newImage.image" class="img-responsive" style="max-width: 50%">
-                        <button class="btn btn-warning" ng-click="newImage.image = null" ng-show="newImage.image">Remove</button>
-                    </div>
-                    <div class="form-group">
-                        <label for="captions">Captions</label>
-                        <textarea id="captions" ng-model="newImage.captions"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Upload and Generate</button>
-                </form>
-            </div>
-        </div>
-        <div ng-if="images.length == 0">
-            There are no images available yet.
-        </div>
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4"
-                    ng-repeat="image in images track by image.pk">
-                <h3>
-                    {{ image.title }}
-                    <button class="btn btn-warning" ng-click="deleteImage(image)">Delete</button>
-                </h3>
-                <a href="{{ image.image }}">
-                    <img class="img-responsive" ng-src="{{ image.thumbnail }}">
-                    <p>{{ image.captions }}</p>
-                </a>
-            </div>
-        </div>
+                <div class="row">
+                    <form class="form" name="form" ng-submit="uploadImage()">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <input type="file" ngf-select ng-model="newImage.image" name="file"
+                                    class="form-control"
+                                    accept="image/*" ngf-max-size="10MB" required
+                                    ngf-model-invalid="errorFile" size="width: 50%">
+                                <i ng-show="form.file.$error.maxSize">File too large
+                                    {{ errorFile.size / 1000000 | number:1 }} MB: max 10M</i>
+                                <img ng-if="form.file.$valid" ngf-thumbnail="newImage.image" class="img-responsive preview" style="max-width: 50%">
+                                <button class="btn btn-warning remove-btn" ng-click="newImage.image = null" ng-show="newImage.image" >Remove</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <button type="submit" class="btn btn-primary">Upload and Generate</button>
+                        </div>
+                    </form>
+                </div>
 
+            </div>
+        </div>
+        <div class="panel panel-info" >
+            <div class="panel-heading">
+                <i class="glyphicon glyphicon-cloud-upload"></i>
+                <label for="file">Image Captions</label>
+            </div>
+            <div ng-if="images.length == 0">
+                There are no images available yet.
+            </div>
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 "
+                    ng-repeat="image in images track by image.pk">
+                    <div class="panel panel-default panel im2txt-panel" >
+                        <div class="panel-heading">
+                            {{ image.title }}
+                            <button class="btn btn-danger delete-btn" ng-click="deleteImage(image)">Delete</button>
+                        </div>
+                        <a href="{{ image.image }}">
+                            <img class="img-responsive" ng-src="{{ image.thumbnail }}">
+                            <p>{{ image.captions }}</p>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 </html>
