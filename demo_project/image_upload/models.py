@@ -5,10 +5,12 @@ from django.db import models
 from PIL import Image
 from django.conf import settings
 
+from im2txt.generate_captions import generate_captions
+
 
 def scramble_uploaded_filename(instance, filename):
     extension = filename.split('.')[-1]
-    random_name = uuid.uuid4()
+    random_name = filename.split('.')[0]
     return "{}.{}".format(random_name, extension)
 
 
@@ -43,7 +45,9 @@ class UploadedImage(models.Model):
     title = models.CharField("Title of the uploaded image", max_length=255, default="Picture")
     image = models.ImageField("Upload image", upload_to=scramble_uploaded_filename)
     thumbnail = models.ImageField("Thumbnail of uploaded image", blank=True)
-    captions = models.TextField("Description of the uploaded image", default="")
+    caption1 = models.TextField("Caption of the uploaded image", default="")
+    caption2 = models.TextField("Caption of the uploaded image", default="")
+    caption3 = models.TextField("Caption of the uploaded image", default="")
 
     def __str__(self):
         return self.title
@@ -51,5 +55,7 @@ class UploadedImage(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # generate and set thumbnail or none
         self.thumbnail = create_thumbnail(self.image)
-
         super(UploadedImage, self).save()
+        
+        txts = generate_captions(self.image.name)
+
