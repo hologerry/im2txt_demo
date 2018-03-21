@@ -55,10 +55,12 @@ class UploadedImage(models.Model):
     def save(self, force_insert=False, force_update=False, using=None, update_fields=None):
         # generate and set thumbnail or none
         self.thumbnail = create_thumbnail(self.image)
-        super(UploadedImage, self).save()
+        super(UploadedImage, self).save(force_update=force_update)
         
         captions = generate_captions(self.image.name)
 
         self.caption1, self.caption2, self.caption3 = captions
 
         print(self.caption1)
+
+        super(UploadedImage, self).save(force_update=force_update)
