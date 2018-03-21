@@ -45,9 +45,9 @@ class UploadedImage(models.Model):
     title = models.CharField("Title of the uploaded image", max_length=255, default="Picture")
     image = models.ImageField("Upload image", upload_to=scramble_uploaded_filename)
     thumbnail = models.ImageField("Thumbnail of uploaded image", blank=True)
-    caption1 = models.TextField("Caption of the uploaded image", default="")
-    caption2 = models.TextField("Caption of the uploaded image", default="")
-    caption3 = models.TextField("Caption of the uploaded image", default="")
+    caption1 = models.CharField("Caption 0:", default="", max_length=512)
+    caption2 = models.CharField("Caption 1:", default="", max_length=512)
+    caption3 = models.CharField("Caption 2:", default="", max_length=512)
 
     def __str__(self):
         return self.title
@@ -57,5 +57,8 @@ class UploadedImage(models.Model):
         self.thumbnail = create_thumbnail(self.image)
         super(UploadedImage, self).save()
         
-        txts = generate_captions(self.image.name)
+        captions = generate_captions(self.image.name)
 
+        self.caption1, self.caption2, self.caption3 = captions
+
+        print(self.caption1)

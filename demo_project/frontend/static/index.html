@@ -37,7 +37,7 @@
                                     accept="image/*" ngf-max-size="10MB" required
                                     ngf-model-invalid="errorFile" size="width: 50%">
                                 <i ng-show="form.file.$error.maxSize">File too large
-                                    {{ errorFile.size < 1000000 | number:1 }} MB: max 10M</i>
+                                    {{ errorFile.size / 1000000 | number:1 }} MB: max 10M</i>
                                 <img ng-if="form.file.$valid" ngf-thumbnail="newImage.image" class="img-responsive preview" style="max-width: 50%">
                                 <button class="btn btn-warning remove-btn" ng-click="newImage.image = null" ng-show="newImage.image" >Remove</button>
                             </div>
@@ -56,7 +56,9 @@
                 <label for="file">Image Captions</label>
             </div>
             <div ng-if="images.length == 0">
-                There are no images available yet.
+                <div class="panel-body">
+                    There are no images available yet.
+                </div>
             </div>
             <div class="row">
                 <div class="col-xs-12 col-sm-6 "
@@ -64,16 +66,28 @@
                     <div class="panel panel-default panel im2txt-panel" >
                         <div class="panel-heading">
                             {{ image.title }}
-                            <button class="btn btn-danger delete-btn" ng-click="deleteImage(image)">Delete</button>
+                            <button class="btn btn-danger delete-btn" ng-click="deleteImage(image)"><i class="glyphicon glyphicon-remove"></i></button>
                         </div>
-                        <a href="{{ image.image }}">
-                            <img class="img-responsive" ng-src="{{ image.thumbnail }}">
-                            <p>{{ image.captions }}</p>
-                        </a>
+                        <div class="panel-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <a href="{{ image.image }}">
+                                            <img class="img-responsive" ng-src="{{ image.thumbnail }}">
+                                        </a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <p>{{ image.caption1 }}</p>
+                                        <p>{{ image.caption2 }}</p>
+                                        <p>{{ image.caption3 }}</p>
+                                    </div>
+                                </div>
+                        </div>
                     </div>
+
 
                 </div>
             </div>
+
         </div>
     </div>
 </body>
